@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Limit Diagnostic Data to Required",
+    "description": "Sets diagnostic telemetry to Required (level 1) instead of Optional/Full, preventing capture of visited websites, inking/typing, and extended app telemetry while preserving Windows Update compatibility.",
+    "category": "telemetry",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+    "key": "Policies\\Microsoft\\Windows\\DataCollection",
+    "value": "AllowTelemetry",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 3,
+    "preserves windows update": true
+  },
+  {
+    "name": "Disable Advertising ID",
+    "description": "Stops apps from using the advertising identifier for experiences across apps and ad networks.",
+    "category": "ads",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AdvertisingInfo",
+    "key": "Policies\\Microsoft\\Windows\\AdvertisingInfo",
+    "value": "DisabledByGroupPolicy",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 0,
+    "preserves windows update": true
+  },
+  {
+    "name": "Disable Activity History Publishing",
+    "description": "Prevents Windows from recording user activity timelines and syncing them to Microsoft servers.",
+    "category": "activity",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+    "key": "Policies\\Microsoft\\Windows\\System",
+    "value": "PublishUserActivities",
+    "type": "REG_DWORD",
+    "data": 0,
+    "default windows": 1,
+    "preserves windows update": true
+  },
+  {
+    "name": "Disable Activity History Upload",
+    "description": "Prevents uploading user activity history to the Microsoft cloud account.",
+    "category": "activity",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+    "key": "Policies\\Microsoft\\Windows\\System",
+    "value": "UploadUserActivities",
+    "type": "REG_DWORD",
+    "data": 0,
+    "default windows": 1,
+    "preserves windows update": true
+  },
+  {
+    "name": "Disable Start Menu Bing Web Search",
+    "description": "Prevents Start menu search queries from being sent across the web to Bing servers. Keeps search completely local, private, and instant.",
+    "category": "search",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+    "key": "Policies\\Microsoft\\Windows\\Windows Search",
+    "value": "DisableWebSearch",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 0,
+    "preserves windows update": true
+  },
+  {
+    "name": "Disable Connected Search in Windows Search",
+    "description": "Disables connected web search integration in Windows Search indexing.",
+    "category": "search",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+    "key": "Policies\\Microsoft\\Windows\\Windows Search",
+    "value": "ConnectedSearchUseWeb",
+    "type": "REG_DWORD",
+    "data": 0,
+    "default windows": 1,
+    "preserves windows update": true
+  },
+  {
+    "name": "Disable Tailored Experiences",
+    "description": "Prevents Microsoft from using diagnostic data to offer personalized recommendations, ads, and tips.",
+    "category": "suggestions",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+    "key": "Policies\\Microsoft\\Windows\\CloudContent",
+    "value": "DisableTailoredExperiencesWithDiagnosticData",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 0,
+    "preserves windows update": true
+  },
+  {
+    "name": "Disable Silent Sponsored App Pre-installation",
+    "description": "Prevents Windows Content Delivery Manager from silently downloading third-party promotional apps in the background.",
+    "category": "promotional",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+    "key": "Policies\\Microsoft\\Windows\\CloudContent",
+    "value": "DisableWindowsConsumerFeatures",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 0,
+    "preserves windows update": true
+  },
+  {
+    "name": "Disable Diagnostic Feedback Prompts",
+    "description": "Sets feedback frequency to Never so Windows does not periodically interrupt user with feedback rating prompts.",
+    "category": "feedback",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+    "key": "Policies\\Microsoft\\Windows\\DataCollection",
+    "value": "DoNotShowFeedbackNotifications",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 0,
+    "preserves windows update": true
+  }
+]

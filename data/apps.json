@@ -1,0 +1,194 @@
+[
+  {
+    "id": "Clipchamp.Clipchamp",
+    "name": "Clipchamp Video Editor",
+    "category": "entertainment",
+    "safe to remove": true,
+    "reason": "Bundled web-wrapper video editor with subscription upsells.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.BingNews",
+    "name": "Microsoft News",
+    "category": "promotional",
+    "safe to remove": true,
+    "reason": "Promotional news feed with sponsored content and ads.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.BingWeather",
+    "name": "MSN Weather",
+    "category": "utility",
+    "safe to remove": true,
+    "reason": "Weather app with MSN telemetry and ad modules.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.GamingApp",
+    "name": "Xbox App",
+    "category": "gaming",
+    "safe to remove": true,
+    "reason": "Xbox PC gaming storefront and social hub. Non-gamers do not need it.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.GetHelp",
+    "name": "Get Help",
+    "category": "utility",
+    "safe to remove": true,
+    "reason": "Online support assistant.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.Getstarted",
+    "name": "Tips",
+    "category": "promotional",
+    "safe to remove": true,
+    "reason": "Feature showcase and promotional tips for Microsoft services.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.MicrosoftOfficeHub",
+    "name": "Microsoft 365 (Office)",
+    "category": "promotional",
+    "safe to remove": true,
+    "reason": "Office web portal stub pushing Microsoft 365 subscriptions.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.MicrosoftSolitaireCollection",
+    "name": "Microsoft Solitaire Collection",
+    "category": "gaming",
+    "safe to remove": true,
+    "reason": "Casual card game containing video advertisements.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.People",
+    "name": "Microsoft People",
+    "category": "social",
+    "safe to remove": true,
+    "reason": "Deprecated contacts manager, largely superseded by modern web apps.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.PowerAutomateDesktop",
+    "name": "Power Automate",
+    "category": "utility",
+    "safe to remove": true,
+    "reason": "Enterprise workflow automation tool. Unused by general consumers.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.Todos",
+    "name": "Microsoft To Do",
+    "category": "utility",
+    "safe to remove": true,
+    "reason": "Cloud task list manager requiring Microsoft Account.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.WindowsFeedbackHub",
+    "name": "Feedback Hub",
+    "category": "utility",
+    "safe to remove": true,
+    "reason": "Diagnostic feedback submission tool.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.YourPhone",
+    "name": "Phone Link",
+    "category": "social",
+    "safe to remove": true,
+    "reason": "Android/iOS sync companion with background sync services.",
+    "dependencies": []
+  },
+  {
+    "id": "MicrosoftTeams",
+    "name": "Microsoft Teams (Personal)",
+    "category": "social",
+    "safe to remove": true,
+    "reason": "Consumer Teams client bundled in taskbar. High idle memory footprint.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.549981C3F5F10",
+    "name": "Cortana",
+    "category": "utility",
+    "safe to remove": true,
+    "reason": "Deprecated voice assistant.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.ZuneMusic",
+    "name": "Media Player",
+    "category": "entertainment",
+    "safe to remove": true,
+    "reason": "UWP Media Player. Can be safely replaced by VLC or retained.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.ZuneVideo",
+    "name": "Films & TV",
+    "category": "entertainment",
+    "safe to remove": true,
+    "reason": "Legacy video storefront player.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.WindowsStore",
+    "name": "Microsoft Store",
+    "category": "essential",
+    "safe to remove": false,
+    "reason": "Required for application updates, component updates, and app installs.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.DesktopAppInstaller",
+    "name": "App Installer / Winget",
+    "category": "essential",
+    "safe to remove": false,
+    "reason": "Package manager engine (winget). Critical for modern Windows app management.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.StorePurchaseApp",
+    "name": "Store Purchase App",
+    "category": "essential",
+    "safe to remove": false,
+    "reason": "Licensing and purchase backend for Store packages.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.WindowsTerminal",
+    "name": "Windows Terminal",
+    "category": "essential",
+    "safe to remove": false,
+    "reason": "Modern default terminal environment.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.WindowsCalculator",
+    "name": "Calculator",
+    "category": "essential",
+    "safe to remove": false,
+    "reason": "Standard utility calculator.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.WindowsNotepad",
+    "name": "Notepad",
+    "category": "essential",
+    "safe to remove": false,
+    "reason": "Essential plain text editor.",
+    "dependencies": []
+  },
+  {
+    "id": "Microsoft.ScreenSketch",
+    "name": "Snipping Tool",
+    "category": "essential",
+    "safe to remove": false,
+    "reason": "System screenshot and screen recording utility.",
+    "dependencies": []
+  }
+]
