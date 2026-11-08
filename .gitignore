@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Test & coverage caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# LiteWin workspace & build artifacts
+build/
+dist/
+workspace/
+workspaces/
+out/
+tmp/
+scratch/
+
+# Large disk images and Windows artifacts
+*.iso
+*.wim
+*.esd
+*.swm
+*.vhd
+*.vhdx
+*.qcow2
+*.img
+
+# Logs and local environment
+*.log
+.env
+.venv
+env/
+venv/
+ENV/
