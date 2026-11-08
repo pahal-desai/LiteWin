@@ -57,6 +57,9 @@ class GuiApp:
         self.out_iso_path = tk.StringVar()
         self.edition_var = tk.StringVar()
         self.username_var = tk.StringVar(value="User")
+        self.disable_updates_var = tk.BooleanVar(value=True)
+        self.dark_theme_var = tk.BooleanVar(value=True)
+        self.wallpaper_var = tk.BooleanVar(value=True)
         self.profile_var = tk.StringVar(value="standard")
         self.single_edition_var = tk.BooleanVar(value=False)
         self.firefox_var = tk.BooleanVar(value=True)
@@ -135,6 +138,19 @@ class GuiApp:
             acc_row,
             text="(Bypasses Microsoft Account setup completely)",
             foreground="#007700",
+        ).pack(side=tk.LEFT)
+
+        # System & Theme Customizations
+        cust_row = ttk.Frame(src_frame)
+        cust_row.pack(fill=tk.X, pady=(6, 0))
+        ttk.Checkbutton(
+            cust_row, text="Permanently Disable Windows Update", variable=self.disable_updates_var
+        ).pack(side=tk.LEFT, padx=(0, 15))
+        ttk.Checkbutton(
+            cust_row, text="Dark Theme", variable=self.dark_theme_var
+        ).pack(side=tk.LEFT, padx=(0, 15))
+        ttk.Checkbutton(
+            cust_row, text="LiteWin 4K Wallpaper", variable=self.wallpaper_var
         ).pack(side=tk.LEFT)
 
         # Tabbed notebook for configurations
@@ -415,6 +431,8 @@ class GuiApp:
         self.log(f"[*] Profile: {self.profile_var.get()}")
         user_name = self.username_var.get().strip() or "User"
         self.log(f"[*] Offline User: {user_name} (MSA Bypassed)")
+        self.log(f"[*] Disable Windows Update: {self.disable_updates_var.get()}")
+        self.log(f"[*] Dark Theme: {self.dark_theme_var.get()} | Custom Wallpaper: {self.wallpaper_var.get()}")
         if ed_idx:
             self.log(f"[*] Target Edition Index: {ed_idx}")
 
@@ -432,6 +450,9 @@ class GuiApp:
                 edition_idx=ed_idx,
                 single_edition=self.single_edition_var.get(),
                 username=user_name,
+                disable_updates=self.disable_updates_var.get(),
+                dark_theme=self.dark_theme_var.get(),
+                wallpaper=self.wallpaper_var.get(),
             )
             self.log("[+] Build completed successfully!")
             self.log(f"[+] Output ISO: {res['iso path']}")

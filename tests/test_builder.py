@@ -10,7 +10,14 @@ from litewin import iso
 
 
 def test_unattend_xml_structure():
-    content = unattend.generate(edition="Windows 11 Pro", lang="en-US", username="LiteWinUser")
+    content = unattend.generate(
+        edition="Windows 11 Pro",
+        lang="en-US",
+        username="LiteWinUser",
+        disable_updates=True,
+        dark_theme=True,
+        wallpaper=True,
+    )
     assert "windowsPE" in content
     assert "specialize" in content
     assert "oobeSystem" in content
@@ -24,6 +31,13 @@ def test_unattend_xml_structure():
     assert "setup-firefox.cmd" in content
     assert "apply-privacy.ps1" in content
     assert "remove-packages.ps1" in content
+    assert "disable-updates.ps1" in content
+    assert "apply-theme.ps1" in content
+    assert "wuauserv" in content
+    assert "WaaSMedicSvc" in content
+    assert "SystemUsesLightTheme" in content
+    assert "AppsUseLightTheme" in content
+    assert "Wallpaper" in content
 
     # verify valid XML syntax
     root = ET.fromstring(content)

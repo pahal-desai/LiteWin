@@ -118,5 +118,101 @@
     "data": 1,
     "default windows": 0,
     "preserves windows update": true
+  },
+  {
+    "name": "Permanently Disable Automatic Windows Updates",
+    "description": "Sets NoAutoUpdate to 1 via Group Policy to permanently prevent Windows Update from checking or downloading updates.",
+    "category": "updates",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+    "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+    "value": "NoAutoUpdate",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 0,
+    "preserves windows update": false
+  },
+  {
+    "name": "Configure Windows Update to Never Check",
+    "description": "Sets AUOptions to 1 (Never check for updates) in Windows Update Group Policy.",
+    "category": "updates",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+    "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+    "value": "AUOptions",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 0,
+    "preserves windows update": false
+  },
+  {
+    "name": "Remove Windows Update Access in Settings UI",
+    "description": "Removes access to all Windows Update features and scans from the Windows Settings app.",
+    "category": "updates",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+    "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+    "value": "SetDisableUXWUAccess",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 0,
+    "preserves windows update": false
+  },
+  {
+    "name": "Disable Access to Windows Update Infrastructure",
+    "description": "Completely disables user and background access to Windows Update scanning infrastructure.",
+    "category": "updates",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+    "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+    "value": "DisableWindowsUpdateAccess",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 0,
+    "preserves windows update": false
+  },
+  {
+    "name": "Exclude Drivers from Windows Updates",
+    "description": "Prevents Windows Update from silently downloading and overwriting graphics or hardware drivers.",
+    "category": "updates",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+    "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+    "value": "ExcludeWUDriversInQualityUpdate",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 0,
+    "preserves windows update": false
+  },
+  {
+    "name": "Disable Delivery Optimization Peer Networking",
+    "description": "Disables peer-to-peer update distribution and background bandwidth consumption.",
+    "category": "updates",
+    "hive": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization",
+    "key": "SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization",
+    "value": "DODownloadMode",
+    "type": "REG_DWORD",
+    "data": 0,
+    "default windows": 1,
+    "preserves windows update": false
+  },
+  {
+    "name": "Enable System Dark Theme by Default",
+    "description": "Enforces dark mode for the Windows 11 Taskbar, Start Menu, and System flyouts.",
+    "category": "theme",
+    "hive": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+    "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+    "value": "SystemUsesLightTheme",
+    "type": "REG_DWORD",
+    "data": 0,
+    "default windows": 1,
+    "preserves windows update": true
+  },
+  {
+    "name": "Enable Application Dark Theme by Default",
+    "description": "Enforces dark mode for Windows 11 applications, File Explorer, and Settings.",
+    "category": "theme",
+    "hive": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+    "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+    "value": "AppsUseLightTheme",
+    "type": "REG_DWORD",
+    "data": 0,
+    "default windows": 1,
+    "preserves windows update": true
   }
 ]

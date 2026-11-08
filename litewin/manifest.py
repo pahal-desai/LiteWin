@@ -33,13 +33,17 @@ def create(data):
             "username": data.get("username", "User"),
             "msa bypass": True,
         },
+        "theme": {
+            "dark theme": data.get("dark theme", True),
+            "wallpaper": "LiteWin 4K Default Wallpaper" if data.get("wallpaper", True) else "stock",
+        },
         "components removed": data.get("removals", []),
         "components retained": data.get("retained", []),
         "privacy settings": data.get("privacy", []),
         "firefox integration": data.get("firefox", {"enabled": True}),
         "security status": {
             "windows defender": "disabled / removed" if def_removed else "preserved",
-            "windows update": "preserved",
+            "windows update": "permanently disabled" if data.get("disable updates", True) else "preserved",
             "windows firewall": "preserved",
             "smartscreen": "preserved",
             "uac": "preserved",
@@ -78,7 +82,7 @@ def markdown(manifest):
         "| Component | Status | Rationale |",
         "| :--- | :--- | :--- |",
         f"| Windows Defender | {sec_info.get('windows defender', 'preserved').title()} | {'Disabled to minimize background CPU/RAM footprint' if 'disabled' in sec_info.get('windows defender', '') else 'Essential anti-malware and kernel protection'} |",
-        "| Windows Update | Preserved | Ongoing security updates and bug fixes |",
+        f"| Windows Update | {sec_info.get('windows update', 'preserved').title()} | {'Permanently disabled to prevent unexpected restarts, bandwidth usage, and forced updates' if 'disabled' in sec_info.get('windows update', '') else 'Ongoing security updates and bug fixes'} |",
         "| Windows Firewall | Preserved | Inbound/outbound traffic filtering |",
         "| SmartScreen | Preserved | Malicious download protection |",
         "| User Account Control (UAC) | Preserved | Privilege escalation guard |",
@@ -123,6 +127,7 @@ def markdown(manifest):
         )
 
     acc = manifest.get("account", {})
+    thm = manifest.get("theme", {})
     lines.extend([
         "",
         "### User Account & Setup Experience",
@@ -131,6 +136,11 @@ def markdown(manifest):
         f"- **Default Username:** `{acc.get('username', 'User')}`",
         "- **Microsoft Account Enforcement:** Completely bypassed (`BypassNRO = 1`, `NoConnectedUser = 1`)",
         "- **Online Account Screens:** Suppressed in OOBE (`HideOnlineAccountScreens = true`)",
+        "",
+        "### Theme & Appearance",
+        "",
+        f"- **Default Color Mode:** {'Dark Theme' if thm.get('dark theme') else 'Light Theme'}",
+        f"- **Wallpaper:** {thm.get('wallpaper', 'LiteWin 4K Default Wallpaper')}",
     ])
 
     ff = manifest.get("firefox integration", {})

@@ -57,6 +57,8 @@ def test_manifest_creation_and_markdown():
     assert len(mf["components removed"]) == 1
     assert mf["account"]["username"] == "CustomLocalUser"
     assert mf["account"]["msa bypass"] is True
+    assert mf["security status"]["windows update"] == "permanently disabled"
+    assert mf["theme"]["dark theme"] is True
 
     md = manifest.markdown(mf)
     assert "LiteWin Build & Audit Report" in md
@@ -65,6 +67,8 @@ def test_manifest_creation_and_markdown():
     assert "Windows Defender" in md
     assert "CustomLocalUser" in md
     assert "BypassNRO" in md
+    assert "Dark Theme" in md
+    assert "Wallpaper" in md
 
     with tempfile.TemporaryDirectory() as tmp:
         paths = manifest.save(mf, tmp)

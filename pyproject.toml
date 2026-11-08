@@ -16,7 +16,7 @@ dependencies = []
 include = ["litewin*"]
 
 [tool.setuptools.package-data]
-"*" = ["*.json", "*.xml", "*.cmd", "*.ps1"]
+"*" = ["*.json", "*.xml", "*.cmd", "*.ps1", "*.png"]
 
 [project.scripts]
 litewin = "litewin.cli:run"

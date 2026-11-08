@@ -80,6 +80,12 @@ def run():
     bld.add_argument("--edition", type=int, help="edition index (e.g. 6 for Pro)")
     bld.add_argument("--single-edition", action="store_true", help="export only selected edition to trim multi-edition image size")
     bld.add_argument("--username", default="User", help="offline local account username (default: User)")
+    bld.add_argument("--disable-updates", action="store_true", default=True, help="permanently disable Windows Update (default: enabled)")
+    bld.add_argument("--no-disable-updates", dest="disable_updates", action="store_false", help="preserve Windows Update")
+    bld.add_argument("--dark-theme", action="store_true", default=True, help="enable dark theme by default (default: enabled)")
+    bld.add_argument("--light-theme", dest="dark_theme", action="store_false", help="use stock light theme")
+    bld.add_argument("--wallpaper", action="store_true", default=True, help="apply LiteWin default 4K wallpaper (default: enabled)")
+    bld.add_argument("--no-wallpaper", dest="wallpaper", action="store_false", help="do not inject custom wallpaper")
     bld.add_argument("--workdir", help="custom workspace root folder")
 
     # test command
@@ -185,6 +191,9 @@ def run():
             root=args.workdir,
             single_edition=getattr(args, "single_edition", False),
             username=getattr(args, "username", "User"),
+            disable_updates=getattr(args, "disable_updates", True),
+            dark_theme=getattr(args, "dark_theme", True),
+            wallpaper=getattr(args, "wallpaper", True),
         )
         print("[+] Build completed successfully!")
         show(res)

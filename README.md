@@ -13,8 +13,9 @@ Unlike typical post-install debloater scripts that execute aggressively after Wi
 - **Performance:** Eliminates non-essential preinstalled applications (Clipchamp, news feeds, casual game ads, redundant promotional wrappers) and background telemetry activity to minimize idle RAM and CPU overhead.
 - **Privacy:** Enforces sensible privacy defaults via documented Group Policies and registry settings (disabling Advertising ID, timeline uploads, and Start menu Bing queries) without breaking core Windows functionality.
 - **Offline Local Account:** Completely eliminates Microsoft Account (MSA) enforcement and internet connectivity requirements during setup via `BypassNRO`, `NoConnectedUser`, and declarative offline local account provisioning.
-- **Reliability:** Strictly preserves Windows Update, system recovery, hardware drivers, and core runtime libraries (including WebView2).
-- **Security & Modularity:** Preserves all native security infrastructure (Windows Firewall, SmartScreen, and User Account Control), while supporting targeted removal of Defender (`MsMpEng.exe` / Antimalware Service) and Microsoft Edge for users requiring minimum background footprint.
+- **Controlled Updates:** Permanently disables Windows Update (`wuauserv`, `WaaSMedicSvc`, `UsoSvc`, `dosvc`) and background update orchestrators to eliminate unexpected background reboots, forced updates, and telemetry sync.
+- **Theme & Appearance:** Out-of-the-box Dark Theme (Apps & System UI) and default 4K LiteWin desktop wallpaper.
+- **Security & Modularity:** Preserves essential security infrastructure (Windows Firewall, SmartScreen, and User Account Control), while supporting targeted removal of Defender (`MsMpEng.exe` / Antimalware Service) and Microsoft Edge for users requiring minimum background footprint.
 - **Transparency:** Produces verifiable SHA-256 build manifests and human-readable Markdown audit reports detailing every change made to the installation media.
 - **Firefox-First Experience:** Bundles and configures Mozilla Firefox as the default browser out-of-the-box using official enterprise deployment policies and Windows OEM default associations.
 
@@ -201,14 +202,16 @@ LiteWin protects critical system packages from accidental removal:
 
 ---
 
-## Privacy & Security Model
+## Privacy, Security & Customization Model
 
 Every setting altered by LiteWin is documented in `data/privacy.json`:
-- **Telemetry Level:** Set to Required/Basic (level 1) — stops capture of web browsing history and user typing/inking while preserving Windows Update.
+- **Telemetry Level:** Set to Required/Basic (level 1) — stops capture of web browsing history and user typing/inking.
 - **Advertising Identifier:** Disabled.
 - **Activity History:** Syncing and cloud timeline upload disabled.
 - **Start Menu Search:** Local search only; Bing query transmission disabled.
-- **Security Services:** Windows Defender, Windows Firewall, SmartScreen, and User Account Control (UAC) are strictly preserved.
+- **Windows Update:** Permanently disabled (`wuauserv`, `WaaSMedicSvc`, `UsoSvc`, `dosvc` set to Start 4, update scheduled tasks disabled, and Group Policy locks applied).
+- **Theme & Wallpaper:** Dark theme enabled for system flyouts and applications; LiteWin 4K desktop wallpaper bundled by default.
+- **Security Services:** Windows Firewall, SmartScreen, and User Account Control (UAC) are strictly preserved. Defender removal is available as an option.
 
 ---
 

@@ -184,7 +184,23 @@ HTML_CONTENT = """<!DOCTYPE html>
     </div>
 
     <div class="card">
-      <h2>4. Firefox-First Experience</h2>
+      <h2>4. System Customizations & Theme</h2>
+      <div class="item-row">
+        <input type="checkbox" id="wuDisable" checked />
+        <label for="wuDisable"><strong>Permanently disable Windows Update</strong> (terminates services, tasks, and settings access)</label>
+      </div>
+      <div class="item-row" style="margin-top: 8px;">
+        <input type="checkbox" id="darkTheme" checked />
+        <label for="darkTheme"><strong>Enable Dark Theme by default</strong> (System UI and Applications)</label>
+      </div>
+      <div class="item-row" style="margin-top: 8px;">
+        <input type="checkbox" id="customWp" checked />
+        <label for="customWp"><strong>Set LiteWin 4K Wallpaper by default</strong> (bundled to C:\\Windows\\Web\\Wallpaper\\LiteWin)</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>5. Firefox-First Experience</h2>
       <div class="item-row">
         <input type="checkbox" id="ffEnable" checked />
         <label for="ffEnable"><strong>Install Mozilla Firefox silently during Windows Setup</strong></label>
@@ -196,7 +212,7 @@ HTML_CONTENT = """<!DOCTYPE html>
 
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-        <h2>5. Build & Output</h2>
+        <h2>6. Build & Output</h2>
         <button class="action" id="buildBtn" onclick="startBuild()">Start LiteWin Build</button>
       </div>
       <div id="console">Ready to customize. Click 'Start LiteWin Build' to begin.</div>
@@ -325,6 +341,9 @@ HTML_CONTENT = """<!DOCTYPE html>
       const single = document.getElementById('singleEdition').checked;
       const prof = document.getElementById('profileSelect').value;
       const user = (document.getElementById('username').value || 'User').trim();
+      const disableWu = document.getElementById('wuDisable').checked;
+      const dark = document.getElementById('darkTheme').checked;
+      const wp = document.getElementById('customWp').checked;
 
       document.getElementById('buildBtn').disabled = true;
       document.getElementById('console').textContent = 'Starting build...\\n';
@@ -337,7 +356,10 @@ HTML_CONTENT = """<!DOCTYPE html>
           edition: edIndex,
           single_edition: single,
           profile: prof,
-          username: user
+          username: user,
+          disable_updates: disableWu,
+          dark_theme: dark,
+          wallpaper: wp
         })
       });
       const data = await res.json();
@@ -466,17 +488,29 @@ class WebHandler(http.server.BaseHTTPRequestHandler):
             single = data.get("single_edition", False)
             prof = data.get("profile", "standard")
             user = data.get("username", "User")
+            disable_wu = data.get("disable_updates", True)
+            dark = data.get("dark_theme", True)
+            wp = data.get("wallpaper", True)
 
             def worker():
                 try:
                     add_log(f"Starting LiteWin build from: {iso_p}")
                     add_log(f"Configuring offline local user '{user}' (MSA bypassed)")
+                    if disable_wu:
+                        add_log("Windows Update: Permanently disabled (services, tasks, policies)")
+                    if dark:
+                        add_log("Dark Theme: Enabled by default")
+                    if wp:
+                        add_log("Wallpaper: LiteWin 4K Default Wallpaper bundled")
                     res = builder.build(
                         src_iso=iso_p,
                         profile=prof,
                         edition_idx=ed_idx,
                         single_edition=single,
                         username=user,
+                        disable_updates=disable_wu,
+                        dark_theme=dark,
+                        wallpaper=wp,
                     )
                     add_log("Build completed successfully!")
                     add_log(f"Output ISO: {res['iso path']}")

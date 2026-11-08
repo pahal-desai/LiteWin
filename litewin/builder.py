@@ -11,9 +11,11 @@ from litewin import compat
 from litewin import manifest
 from litewin import repack
 from litewin import unattend
+from litewin import updates
+from litewin import theme
 
 
-def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None, single_edition=False, username="User"):
+def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None, single_edition=False, username="User", disable_updates=True, dark_theme=True, wallpaper=True):
     # validate source ISO
     iso_info = iso.verify(src_iso)
     if not iso_info.get("valid"):
@@ -72,8 +74,9 @@ def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None
             image.export(wim_path, target_ed["index"], lean_wim, name=target_ed["name"])
             os.replace(lean_wim, wim_path)
 
-        # setup OEM scripts folder for native, non-destructive deployment
-        oem_scripts = os.path.join(extracted, "sources", "$OEM$", "$$", "Setup", "Scripts")
+        # setup OEM folder for native, non-destructive deployment
+        oem_root = os.path.join(extracted, "sources", "$OEM$")
+        oem_scripts = os.path.join(oem_root, "$$", "Setup", "Scripts")
         os.makedirs(oem_scripts, exist_ok=True)
 
         # write privacy script
@@ -84,8 +87,16 @@ def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None
         with open(os.path.join(oem_scripts, "remove-packages.ps1"), "w", encoding="utf-8") as f:
             f.write(packages.makescript(pkg_plan["remove"]))
 
+        # write windows update disable script
+        if disable_updates:
+            with open(os.path.join(oem_scripts, "disable-updates.ps1"), "w", encoding="utf-8") as f:
+                f.write(updates.makescript())
+
         # write firefox bundle
         firefox.bundle(oem_scripts)
+
+        # bundle dark theme and custom LiteWin wallpaper
+        theme.bundle(oem_root=oem_root, dark=dark_theme)
 
         # write autounattend.xml
         disable_def = any(a.get("id") == "WindowsDefender" for a in pkg_plan["remove"])
@@ -94,6 +105,9 @@ def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None
             lang=target_ed.get("language", "en-US"),
             disable_defender=disable_def,
             username=username,
+            disable_updates=disable_updates,
+            dark_theme=dark_theme,
+            wallpaper=wallpaper,
         )
         with open(os.path.join(extracted, "autounattend.xml"), "w", encoding="utf-8") as f:
             f.write(unattend_content)
@@ -123,6 +137,9 @@ def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None
             "image": target_ed,
             "profile": profile,
             "username": username,
+            "disable updates": disable_updates,
+            "dark theme": dark_theme,
+            "wallpaper": wallpaper,
             "removals": pkg_plan["remove"],
             "retained": pkg_plan["retain"],
             "privacy": priv_rules,
