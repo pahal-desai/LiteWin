@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
+# Always resolve repository root directory regardless of where script is called from
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+cd "$ROOT_DIR"
+
 echo "===================================================="
 echo " LiteWin - Windows, without the baggage."
 echo " Linux Native Launcher"
@@ -11,7 +16,7 @@ echo ""
 if ! command -v python3 &>/dev/null; then
     echo "[LiteWin] Python 3 is not installed. Attempting automatic installation..."
     if command -v apt-get &>/dev/null; then
-        sudo apt-get update && sudo apt-get install -y python3 python3-pip python3-tk
+        sudo apt-get update && sudo apt-get install -y python3 python3-pip python3-venv python3-tk
     elif command -v dnf &>/dev/null; then
         sudo dnf install -y python3 python3-pip python3-tkinter
     elif command -v pacman &>/dev/null; then
@@ -32,10 +37,21 @@ if ! command -v 7zz &>/dev/null && ! command -v 7z &>/dev/null; then
     chmod +x "$HOME/.local/bin/7zz"
 fi
 
-# 3. Install LiteWin in user / local environment
-echo "[LiteWin] Ensuring dependencies are installed..."
-python3 -m pip install -e . --quiet --break-system-packages 2>/dev/null || python3 -m pip install -e . --quiet
+# 3. Create and activate a dedicated virtual environment (.venv)
+VENV_DIR="$ROOT_DIR/.venv"
+if [ ! -d "$VENV_DIR" ]; then
+    echo "[LiteWin] Creating dedicated virtual environment in $VENV_DIR..."
+    python3 -m venv "$VENV_DIR"
+fi
 
-# 4. Launch LiteWin GUI
+echo "[LiteWin] Activating virtual environment..."
+# shellcheck source=/dev/null
+source "$VENV_DIR/bin/activate"
+
+# 4. Ensure dependencies and package are installed in venv
+echo "[LiteWin] Ensuring dependencies are installed..."
+pip install -e . --quiet
+
+# 5. Launch LiteWin GUI
 echo "[LiteWin] Launching LiteWin GUI..."
-exec python3 -m litewin.cli gui "$@"
+exec python -m litewin.cli gui "$@"

@@ -3,6 +3,9 @@ setlocal EnableDelayedExpansion
 
 title LiteWin - Windows, without the baggage
 
+set SCRIPT_DIR=%~dp0
+cd /d "%SCRIPT_DIR%.."
+
 echo ====================================================
 echo  LiteWin - Windows, without the baggage.
 echo  Automated Launcher
@@ -56,10 +59,20 @@ if %ERRORLEVEL% neq 0 (
 
 :PY_FOUND
 echo [LiteWin] Python environment ready (%PY_CMD%).
+
+REM Setup and activate virtual environment (.venv)
+if not exist ".venv" (
+    echo [LiteWin] Creating dedicated virtual environment in .venv...
+    %PY_CMD% -m venv .venv
+)
+
+echo [LiteWin] Activating virtual environment...
+call .venv\Scripts\activate.bat
+
 echo [LiteWin] Checking and installing dependencies...
-%PY_CMD% -m pip install -e . --quiet
+pip install -e . --quiet
 
 echo [LiteWin] Launching LiteWin Graphical User Interface...
-%PY_CMD% -m litewin.cli gui %*
+python -m litewin.cli gui %*
 
 endlocal

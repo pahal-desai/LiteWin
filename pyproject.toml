@@ -12,6 +12,12 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = []
 
+[tool.setuptools.packages.find]
+include = ["litewin*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.xml", "*.cmd", "*.ps1"]
+
 [project.scripts]
 litewin = "litewin.cli:run"
 
