@@ -188,6 +188,12 @@ Every setting altered by LiteWin is documented in `data/privacy.json`:
 
 ---
 
+## AI Disclosure & Development Notes
+
+LiteWin was developed with the assistance of agentic AI tools (Google DeepMind's Antigravity) for architecture scaffolding, test generation, and documentation under human direction and review. All image servicing abstractions, ISO validation checks, registry settings, and compatibility records are verified through automated test suites and real Windows installation media.
+
+---
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
