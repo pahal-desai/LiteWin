@@ -106,5 +106,17 @@
     "data": 1,
     "default windows": 0,
     "preserves windows update": true
+  },
+  {
+    "name": "Block Microsoft Account Enforcement & Cloud Login Prompts",
+    "description": "Enforces offline local user accounts only. Disables Windows setup and Settings from prompting or forcing a Microsoft cloud account.",
+    "category": "accounts",
+    "hive": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+    "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+    "value": "NoConnectedUser",
+    "type": "REG_DWORD",
+    "data": 1,
+    "default windows": 0,
+    "preserves windows update": true
   }
 ]

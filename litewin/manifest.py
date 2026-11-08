@@ -28,6 +28,11 @@ def create(data):
         "original iso": data.get("iso", {}),
         "windows image": data.get("image", {}),
         "profile": data.get("profile", "standard"),
+        "account": {
+            "type": "Local Offline Account",
+            "username": data.get("username", "User"),
+            "msa bypass": True,
+        },
         "components removed": data.get("removals", []),
         "components retained": data.get("retained", []),
         "privacy settings": data.get("privacy", []),
@@ -116,6 +121,17 @@ def markdown(manifest):
         lines.append(
             f"| {s.get('name', 'N/A')} | `{s.get('hive', '')}` | `{s.get('value', '')}` | `{s.get('data', '')}` |"
         )
+
+    acc = manifest.get("account", {})
+    lines.extend([
+        "",
+        "### User Account & Setup Experience",
+        "",
+        f"- **Account Type:** {acc.get('type', 'Local Offline Account')}",
+        f"- **Default Username:** `{acc.get('username', 'User')}`",
+        "- **Microsoft Account Enforcement:** Completely bypassed (`BypassNRO = 1`, `NoConnectedUser = 1`)",
+        "- **Online Account Screens:** Suppressed in OOBE (`HideOnlineAccountScreens = true`)",
+    ])
 
     ff = manifest.get("firefox integration", {})
     lines.extend([

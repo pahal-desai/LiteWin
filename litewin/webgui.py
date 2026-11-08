@@ -158,6 +158,11 @@ HTML_CONTENT = """<!DOCTYPE html>
           <input type="checkbox" id="singleEdition" /> Trim other editions
         </label>
       </div>
+      <div class="row" style="margin-top: 10px; align-items: center;">
+        <label style="font-size: 13px; color: var(--muted); min-width: 140px;">Offline Local User:</label>
+        <input type="text" id="username" value="User" placeholder="User" style="max-width: 180px;" />
+        <span style="font-size: 12px; color: var(--accent);">Bypasses Microsoft Account (MSA) setup</span>
+      </div>
     </div>
 
     <div class="grid-2">
@@ -319,6 +324,7 @@ HTML_CONTENT = """<!DOCTYPE html>
       const edIndex = parseInt(document.getElementById('editionsList').value) || 1;
       const single = document.getElementById('singleEdition').checked;
       const prof = document.getElementById('profileSelect').value;
+      const user = (document.getElementById('username').value || 'User').trim();
 
       document.getElementById('buildBtn').disabled = true;
       document.getElementById('console').textContent = 'Starting build...\\n';
@@ -330,7 +336,8 @@ HTML_CONTENT = """<!DOCTYPE html>
           iso: path,
           edition: edIndex,
           single_edition: single,
-          profile: prof
+          profile: prof,
+          username: user
         })
       });
       const data = await res.json();
@@ -458,15 +465,18 @@ class WebHandler(http.server.BaseHTTPRequestHandler):
             ed_idx = data.get("edition", 1)
             single = data.get("single_edition", False)
             prof = data.get("profile", "standard")
+            user = data.get("username", "User")
 
             def worker():
                 try:
                     add_log(f"Starting LiteWin build from: {iso_p}")
+                    add_log(f"Configuring offline local user '{user}' (MSA bypassed)")
                     res = builder.build(
                         src_iso=iso_p,
                         profile=prof,
                         edition_idx=ed_idx,
                         single_edition=single,
+                        username=user,
                     )
                     add_log("Build completed successfully!")
                     add_log(f"Output ISO: {res['iso path']}")

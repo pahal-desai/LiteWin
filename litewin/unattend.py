@@ -1,5 +1,6 @@
-def generate(edition="Windows 11 Pro", lang="en-US", disable_defender=False):
+def generate(edition="Windows 11 Pro", lang="en-US", disable_defender=False, username="User"):
     # Generates standard, reliable autounattend.xml using official Microsoft passes
+    # Completely bypasses Microsoft Account (MSA) enforcement and configures an offline local account
     protect_pc = "3" if disable_defender else "1"
     defender_specialize = ""
     if disable_defender:
@@ -25,7 +26,7 @@ def generate(edition="Windows 11 Pro", lang="en-US", disable_defender=False):
         </RunSynchronousCommand>"""
 
     xml = f"""<?xml version="1.0" encoding="utf-8"?>
-<unattend xmlns="urn:schemas-microsoft-com:unattend">
+<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
   <settings pass="windowsPE">
     <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
       <SetupUILanguage>
@@ -53,6 +54,11 @@ def generate(edition="Windows 11 Pro", lang="en-US", disable_defender=False):
           <Description>Bypass RAM check</Description>
           <Path>reg add HKLM\\SYSTEM\\Setup\\LabConfig /v BypassRAMCheck /t REG_DWORD /d 1 /f</Path>
         </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+          <Order>4</Order>
+          <Description>Bypass Network &amp; MSA Requirement</Description>
+          <Path>reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\OOBE /v BypassNRO /t REG_DWORD /d 1 /f</Path>
+        </RunSynchronousCommand>
       </RunSynchronous>
     </component>
   </settings>
@@ -65,6 +71,16 @@ def generate(edition="Windows 11 Pro", lang="en-US", disable_defender=False):
           <Path>powershell.exe -ExecutionPolicy Bypass -NoProfile -File C:\\Windows\\Setup\\Scripts\\apply-privacy.ps1</Path>
         </RunSynchronousCommand>
 {defender_specialize}
+        <RunSynchronousCommand wcm:action="add" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+          <Order>6</Order>
+          <Description>Lock BypassNRO on installed system</Description>
+          <Path>reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\OOBE /v BypassNRO /t REG_DWORD /d 1 /f</Path>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+          <Order>7</Order>
+          <Description>Block Microsoft Account Enforcement</Description>
+          <Path>reg add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v NoConnectedUser /t REG_DWORD /d 1 /f</Path>
+        </RunSynchronousCommand>
       </RunSynchronous>
     </component>
   </settings>
@@ -73,9 +89,32 @@ def generate(edition="Windows 11 Pro", lang="en-US", disable_defender=False):
       <OOBE>
         <HideEULAPage>true</HideEULAPage>
         <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
-        <HideWirelessSetupInOOBE>false</HideWirelessSetupInOOBE>
+        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+        <NetworkLocation>Work</NetworkLocation>
         <ProtectYourPC>{protect_pc}</ProtectYourPC>
       </OOBE>
+      <UserAccounts>
+        <LocalAccounts>
+          <LocalAccount wcm:action="add">
+            <Name>{username}</Name>
+            <DisplayName>{username}</DisplayName>
+            <Group>Administrators</Group>
+            <Password>
+              <Value></Value>
+              <PlainText>true</PlainText>
+            </Password>
+          </LocalAccount>
+        </LocalAccounts>
+      </UserAccounts>
+      <AutoLogon>
+        <Password>
+          <Value></Value>
+          <PlainText>true</PlainText>
+        </Password>
+        <Enabled>true</Enabled>
+        <LogonCount>1</LogonCount>
+        <Username>{username}</Username>
+      </AutoLogon>
       <FirstLogonCommands>
         <SynchronousCommand wcm:action="add" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
           <Order>1</Order>

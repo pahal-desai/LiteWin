@@ -12,8 +12,9 @@ Unlike typical post-install debloater scripts that execute aggressively after Wi
 
 - **Performance:** Eliminates non-essential preinstalled applications (Clipchamp, news feeds, casual game ads, redundant promotional wrappers) and background telemetry activity to minimize idle RAM and CPU overhead.
 - **Privacy:** Enforces sensible privacy defaults via documented Group Policies and registry settings (disabling Advertising ID, timeline uploads, and Start menu Bing queries) without breaking core Windows functionality.
+- **Offline Local Account:** Completely eliminates Microsoft Account (MSA) enforcement and internet connectivity requirements during setup via `BypassNRO`, `NoConnectedUser`, and declarative offline local account provisioning.
 - **Reliability:** Strictly preserves Windows Update, system recovery, hardware drivers, and core runtime libraries (including WebView2).
-- **Security:** Preserves all native security infrastructure (Windows Defender, Firewall, SmartScreen, and User Account Control). LiteWin does not disable security services to chase artificial benchmark gains.
+- **Security & Modularity:** Preserves all native security infrastructure (Windows Firewall, SmartScreen, and User Account Control), while supporting targeted removal of Defender (`MsMpEng.exe` / Antimalware Service) and Microsoft Edge for users requiring minimum background footprint.
 - **Transparency:** Produces verifiable SHA-256 build manifests and human-readable Markdown audit reports detailing every change made to the installation media.
 - **Firefox-First Experience:** Bundles and configures Mozilla Firefox as the default browser out-of-the-box using official enterprise deployment policies and Windows OEM default associations.
 
@@ -146,12 +147,12 @@ litewin plan --profile standard
 ### 4. Build Customized Windows 11 ISO
 Build the customized bootable ISO and generate the audit report:
 ```bash
-litewin build /path/to/Windows11.iso --edition 6 --profile standard
+litewin build /path/to/Windows11.iso --edition 6 --profile standard --username "User"
 ```
 
 For maximum image size reduction (exports only the selected edition):
 ```bash
-litewin build /path/to/Windows11.iso --edition 6 --single-edition
+litewin build /path/to/Windows11.iso --edition 6 --single-edition --username "User"
 ```
 
 ### 5. Test in Virtual Machine (QEMU)
@@ -221,7 +222,7 @@ Every setting altered by LiteWin is documented in `data/privacy.json`:
 
 ## AI Disclosure & Development Notes
 
-LiteWin was developed with the assistance of agentic AI tools (Google DeepMind's Antigravity) for architecture scaffolding, test generation, and documentation under human direction and review. All image servicing abstractions, ISO validation checks, registry settings, and compatibility records are verified through automated test suites and real Windows installation media.
+LiteWin was developed with the assistance of agentic AI tools (Antigravity CLI) for architecture scaffolding, test generation, and documentation under human direction and review. All image servicing abstractions, ISO validation checks, registry settings, and compatibility records are verified through automated test suites and real Windows installation media.
 
 ---
 

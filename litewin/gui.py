@@ -56,6 +56,7 @@ class GuiApp:
         self.iso_path = tk.StringVar()
         self.out_iso_path = tk.StringVar()
         self.edition_var = tk.StringVar()
+        self.username_var = tk.StringVar(value="User")
         self.profile_var = tk.StringVar(value="standard")
         self.single_edition_var = tk.BooleanVar(value=False)
         self.firefox_var = tk.BooleanVar(value=True)
@@ -123,6 +124,18 @@ class GuiApp:
             ed_row, text="Trim other editions (--single-edition)", variable=self.single_edition_var
         )
         single_chk.pack(side=tk.LEFT)
+
+        # Account & OOBE settings
+        acc_row = ttk.Frame(src_frame)
+        acc_row.pack(fill=tk.X, pady=(6, 0))
+        ttk.Label(acc_row, text="Offline Local User:").pack(side=tk.LEFT, padx=(0, 8))
+        user_entry = ttk.Entry(acc_row, textvariable=self.username_var, width=18)
+        user_entry.pack(side=tk.LEFT, padx=(0, 12))
+        ttk.Label(
+            acc_row,
+            text="(Bypasses Microsoft Account setup completely)",
+            foreground="#007700",
+        ).pack(side=tk.LEFT)
 
         # Tabbed notebook for configurations
         self.tabs = ttk.Notebook(self.root)
@@ -400,15 +413,17 @@ class GuiApp:
         self.log(f"[*] LiteWin Build Started at {time.strftime('%X')}")
         self.log(f"[*] Source ISO: {iso_p}")
         self.log(f"[*] Profile: {self.profile_var.get()}")
+        user_name = self.username_var.get().strip() or "User"
+        self.log(f"[*] Offline User: {user_name} (MSA Bypassed)")
         if ed_idx:
             self.log(f"[*] Target Edition Index: {ed_idx}")
 
         thread = threading.Thread(
-            target=self.run_build_worker, args=(iso_p, ed_idx), daemon=True
+            target=self.run_build_worker, args=(iso_p, ed_idx, user_name), daemon=True
         )
         thread.start()
 
-    def run_build_worker(self, iso_p, ed_idx):
+    def run_build_worker(self, iso_p, ed_idx, user_name="User"):
         try:
             self.log("[*] Initializing build workspace...")
             res = builder.build(
@@ -416,6 +431,7 @@ class GuiApp:
                 profile=self.profile_var.get(),
                 edition_idx=ed_idx,
                 single_edition=self.single_edition_var.get(),
+                username=user_name,
             )
             self.log("[+] Build completed successfully!")
             self.log(f"[+] Output ISO: {res['iso path']}")

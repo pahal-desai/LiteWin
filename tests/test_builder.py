@@ -10,11 +10,17 @@ from litewin import iso
 
 
 def test_unattend_xml_structure():
-    content = unattend.generate(edition="Windows 11 Pro", lang="en-US")
+    content = unattend.generate(edition="Windows 11 Pro", lang="en-US", username="LiteWinUser")
     assert "windowsPE" in content
     assert "specialize" in content
     assert "oobeSystem" in content
     assert "BypassTPMCheck" in content
+    assert "BypassNRO" in content
+    assert "NoConnectedUser" in content
+    assert "LocalAccounts" in content
+    assert "LiteWinUser" in content
+    assert "AutoLogon" in content
+    assert "HideWirelessSetupInOOBE>true" in content
     assert "setup-firefox.cmd" in content
     assert "apply-privacy.ps1" in content
     assert "remove-packages.ps1" in content

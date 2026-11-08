@@ -13,7 +13,7 @@ from litewin import repack
 from litewin import unattend
 
 
-def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None, single_edition=False):
+def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None, single_edition=False, username="User"):
     # validate source ISO
     iso_info = iso.verify(src_iso)
     if not iso_info.get("valid"):
@@ -93,6 +93,7 @@ def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None
             edition=target_ed["name"],
             lang=target_ed.get("language", "en-US"),
             disable_defender=disable_def,
+            username=username,
         )
         with open(os.path.join(extracted, "autounattend.xml"), "w", encoding="utf-8") as f:
             f.write(unattend_content)
@@ -121,6 +122,7 @@ def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None
             },
             "image": target_ed,
             "profile": profile,
+            "username": username,
             "removals": pkg_plan["remove"],
             "retained": pkg_plan["retain"],
             "privacy": priv_rules,
