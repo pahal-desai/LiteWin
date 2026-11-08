@@ -11,6 +11,7 @@ from litewin import privacy
 from litewin import builder
 from litewin import qemu
 from litewin import bench
+from litewin import gui
 from litewin import version
 
 
@@ -34,6 +35,9 @@ def run():
     )
     parser.add_argument("--version", action="version", version=f"litewin {version}")
     subs = parser.add_subparsers(dest="cmd", help="command to run")
+
+    # gui command
+    subs.add_parser("gui", help="launch LiteWin graphical user interface")
 
     # check command
     chk = subs.add_parser("check", help="check ISO structure and required files")
@@ -93,9 +97,15 @@ def run():
 
     args = parser.parse_args()
 
-    if not args.cmd:
-        parser.print_help()
-        sys.exit(0)
+    if not args.cmd or args.cmd == "gui":
+        # if a graphical display exists (or on Windows), launch GUI
+        has_display = bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY") or sys.platform == "win32")
+        if has_display:
+            gui.launch()
+            sys.exit(0)
+        else:
+            parser.print_help()
+            sys.exit(0)
 
     if args.cmd == "check":
         res = iso.verify(args.iso)

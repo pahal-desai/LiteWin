@@ -73,6 +73,37 @@ pytest -v
 
 ---
 
+## Graphical User Interface (GUI) & Executables
+
+LiteWin provides both a desktop GUI and standalone self-bootstrapping executables for Windows and Linux.
+
+### Windows Executable (`dist/litewin-windows.exe`)
+- Native Windows 64-bit launcher.
+- **Auto-Bootstrap:** If Python is not installed on the Windows PC, it automatically installs Python silently via winget or official python.org download, installs LiteWin dependencies, and launches the GUI.
+- Run by double-clicking `dist/litewin-windows.exe` or executing `scripts/run-litewin.bat`.
+
+### Linux Standalone Binary (`dist/litewin-linux`)
+- Self-contained Linux x86_64 binary built with PyInstaller.
+- Runs without requiring local pip installations or manual setups:
+  ```bash
+  ./dist/litewin-linux gui
+  ```
+- Or run the bootstrap script which handles system dependencies:
+  ```bash
+  ./scripts/run-litewin.sh
+  ```
+
+### Launching the GUI from Python
+```bash
+# Launch Desktop GUI (falls back to Web GUI if running headless)
+litewin gui
+
+# Explicitly launch Web GUI in your browser
+litewin gui --web
+```
+
+---
+
 ## Usage Guide
 
 LiteWin provides an intuitive CLI:
