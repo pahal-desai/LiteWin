@@ -48,7 +48,7 @@ def fetch(dest, url=MOZILLA_URL):
     return dest
 
 
-def bundle(targetdir):
+def bundle(targetdir, download=False):
     # generates all necessary files in the target folder for silent setup during Windows install
     os.makedirs(targetdir, exist_ok=True)
 
@@ -60,12 +60,25 @@ def bundle(targetdir):
     with open(assocpath, "w", encoding="utf-8") as f:
         f.write(APP_ASSOC)
 
+    # check if user already has Firefox installer in ~/Downloads
+    downloads_ff = os.path.expanduser("~/Downloads/FirefoxSetup.exe")
+    dest_ff = os.path.join(targetdir, "FirefoxSetup.exe")
+    if os.path.isfile(downloads_ff):
+        shutil.copy2(downloads_ff, dest_ff)
+    elif download:
+        try:
+            fetch(dest_ff)
+        except Exception:
+            pass
+
     scriptpath = os.path.join(targetdir, "setup-firefox.cmd")
     script = (
         "@echo off\r\n"
         "echo [LiteWin] Installing Mozilla Firefox...\r\n"
         "if exist \"%~dp0FirefoxSetup.exe\" (\r\n"
         "    \"%~dp0FirefoxSetup.exe\" -ms\r\n"
+        ") else (\r\n"
+        "    powershell.exe -ExecutionPolicy Bypass -Command \"winget install -e --id Mozilla.Firefox --accept-source-agreements --accept-package-agreements\" >nul 2>&1\r\n"
         ")\r\n"
         "timeout /t 5 /nobreak >nul\r\n"
         "set FFDIR=%ProgramFiles%\\Mozilla Firefox\r\n"
@@ -85,4 +98,5 @@ def bundle(targetdir):
         "policies": policypath,
         "associations": assocpath,
         "script": scriptpath,
+        "installer bundled": os.path.isfile(dest_ff),
     }

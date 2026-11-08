@@ -13,7 +13,7 @@ from litewin import repack
 from litewin import unattend
 
 
-def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None):
+def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None, single_edition=False):
     # validate source ISO
     iso_info = iso.verify(src_iso)
     if not iso_info.get("valid"):
@@ -64,6 +64,13 @@ def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None
     try:
         # extract ISO contents safely
         iso.extract(src_iso, extracted)
+
+        # optionally export single edition to trim multi-edition bloat
+        wim_path = os.path.join(extracted, "sources", "install.wim")
+        if single_edition and os.path.isfile(wim_path):
+            lean_wim = os.path.join(extracted, "sources", "install_lean.wim")
+            image.export(wim_path, target_ed["index"], lean_wim, name=target_ed["name"])
+            os.replace(lean_wim, wim_path)
 
         # setup OEM scripts folder for native, non-destructive deployment
         oem_scripts = os.path.join(extracted, "sources", "$OEM$", "$$", "Setup", "Scripts")

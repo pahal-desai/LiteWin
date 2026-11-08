@@ -74,6 +74,7 @@ def run():
     bld.add_argument("--out", help="output customized ISO path")
     bld.add_argument("--profile", default="standard", choices=["minimal", "standard"], help="profile")
     bld.add_argument("--edition", type=int, help="edition index (e.g. 6 for Pro)")
+    bld.add_argument("--single-edition", action="store_true", help="export only selected edition to trim multi-edition image size")
     bld.add_argument("--workdir", help="custom workspace root folder")
 
     # test command
@@ -171,6 +172,7 @@ def run():
             profile=args.profile,
             edition_idx=args.edition,
             root=args.workdir,
+            single_edition=getattr(args, "single_edition", False),
         )
         print("[+] Build completed successfully!")
         show(res)
