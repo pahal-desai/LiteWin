@@ -186,12 +186,17 @@ def editions(target, role="install"):
 def export(src, idx, dest, name=None):
     # exports a single edition from a multi-edition WIM into a new clean WIM
     tool = findtool("wimexport")
-    if not tool:
-        raise RuntimeError("wimexport is required to export image editions")
+    if tool:
+        cmd = [tool, src, str(idx), dest]
+    else:
+        tool_imgx = findtool("wimlib-imagex")
+        if tool_imgx:
+            cmd = [tool_imgx, "export", src, str(idx), dest]
+        else:
+            raise RuntimeError("wimexport is required to export image editions")
 
-    cmd = [tool, src, str(idx), dest]
     if name:
-        cmd.extend(["--dest-name", name])
+        cmd.append(name)
 
     res = subprocess.run(cmd, capture_output=True, text=True)
     if res.returncode != 0:

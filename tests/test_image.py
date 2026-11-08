@@ -61,3 +61,29 @@ def test_makescript():
     assert "AllowTelemetry" in script
     assert "reg load" in script
     assert "reg unload" in script
+
+
+def test_wim_export():
+    import tempfile
+    import subprocess
+    import os
+
+    with tempfile.TemporaryDirectory() as td:
+        src_dir = os.path.join(td, "content")
+        os.makedirs(src_dir)
+        with open(os.path.join(src_dir, "file.txt"), "w") as f:
+            f.write("content")
+        wim1 = os.path.join(td, "source.wim")
+        wim2 = os.path.join(td, "export.wim")
+
+        capture = image.findtool("wimcapture") or image.findtool("wimlib-imagex")
+        if not capture:
+            return  # skip if wimtools not installed
+        subprocess.run([capture, src_dir, wim1, "Edition1"], check=True, capture_output=True)
+
+        # export edition 1 to wim2
+        image.export(wim1, 1, wim2, name="CustomSingleEdition")
+        assert os.path.isfile(wim2)
+        eds = image.editions(wim2)
+        assert len(eds) == 1
+        assert eds[0]["name"] == "CustomSingleEdition"
