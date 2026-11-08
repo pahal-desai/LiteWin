@@ -85,8 +85,12 @@ def test_edge_and_defender_script():
     assert "--uninstall" in script
     assert "WebView" in script
 
-    # Defender removal verifies service disabling and policy keys
+    # Defender removal verifies complete eradication: binaries, MsMpEng, takeown, and services
     assert "DisableAntiSpyware" in script
     assert "DisableRealtimeMonitoring" in script
     assert "WinDefend" in script
+    assert "MsMpEng" in script
+    assert "takeown" in script
+    assert "sc.exe delete" in script
+    assert "Windows Defender" in script
 

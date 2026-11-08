@@ -12,6 +12,16 @@ def generate(edition="Windows 11 Pro", lang="en-US", disable_defender=False):
           <Order>3</Order>
           <Description>Disable Defender Realtime Monitoring</Description>
           <Path>reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection" /v DisableRealtimeMonitoring /t REG_DWORD /d 1 /f</Path>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+          <Order>4</Order>
+          <Description>Disable WinDefend Service</Description>
+          <Path>reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\WinDefend" /v Start /t REG_DWORD /d 4 /f</Path>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+          <Order>5</Order>
+          <Description>Disable WdFilter Driver</Description>
+          <Path>reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\WdFilter" /v Start /t REG_DWORD /d 4 /f</Path>
         </RunSynchronousCommand>"""
 
     xml = f"""<?xml version="1.0" encoding="utf-8"?>
