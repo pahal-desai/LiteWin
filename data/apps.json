@@ -136,6 +136,22 @@
     "dependencies": []
   },
   {
+    "id": "Microsoft-Edge",
+    "name": "Microsoft Edge Browser",
+    "category": "browser",
+    "safe to remove": true,
+    "reason": "Removes Microsoft Edge browser application while strictly preserving WebView2 runtime.",
+    "dependencies": []
+  },
+  {
+    "id": "WindowsDefender",
+    "name": "Windows Defender & Security Services",
+    "category": "security",
+    "safe to remove": true,
+    "reason": "Disables Defender antimalware service, real-time protection, and background scanning to reduce memory and CPU usage.",
+    "dependencies": []
+  },
+  {
     "id": "Microsoft.WindowsStore",
     "name": "Microsoft Store",
     "category": "essential",

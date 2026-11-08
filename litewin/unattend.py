@@ -1,5 +1,19 @@
-def generate(edition="Windows 11 Pro", lang="en-US"):
+def generate(edition="Windows 11 Pro", lang="en-US", disable_defender=False):
     # Generates standard, reliable autounattend.xml using official Microsoft passes
+    protect_pc = "3" if disable_defender else "1"
+    defender_specialize = ""
+    if disable_defender:
+        defender_specialize = """        <RunSynchronousCommand wcm:action="add" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+          <Order>2</Order>
+          <Description>Disable Windows Defender Services</Description>
+          <Path>reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f</Path>
+        </RunSynchronousCommand>
+        <RunSynchronousCommand wcm:action="add" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+          <Order>3</Order>
+          <Description>Disable Defender Realtime Monitoring</Description>
+          <Path>reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection" /v DisableRealtimeMonitoring /t REG_DWORD /d 1 /f</Path>
+        </RunSynchronousCommand>"""
+
     xml = f"""<?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend">
   <settings pass="windowsPE">
@@ -40,6 +54,7 @@ def generate(edition="Windows 11 Pro", lang="en-US"):
           <Description>Configure LiteWin Privacy</Description>
           <Path>powershell.exe -ExecutionPolicy Bypass -NoProfile -File C:\\Windows\\Setup\\Scripts\\apply-privacy.ps1</Path>
         </RunSynchronousCommand>
+{defender_specialize}
       </RunSynchronous>
     </component>
   </settings>
@@ -49,7 +64,7 @@ def generate(edition="Windows 11 Pro", lang="en-US"):
         <HideEULAPage>true</HideEULAPage>
         <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
         <HideWirelessSetupInOOBE>false</HideWirelessSetupInOOBE>
-        <ProtectYourPC>1</ProtectYourPC>
+        <ProtectYourPC>{protect_pc}</ProtectYourPC>
       </OOBE>
       <FirstLogonCommands>
         <SynchronousCommand wcm:action="add" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">

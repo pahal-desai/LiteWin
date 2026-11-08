@@ -67,8 +67,8 @@
     "category": "browser",
     "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
     "dependencies": ["Microsoft.WebView2"],
-    "removal support": "experimental",
-    "known issues": "WebView2 must NOT be removed. Removing WebView2 breaks internal application webviews.",
+    "removal support": "supported",
+    "known issues": "WebView2 runtime must remain intact so internal application webviews function properly.",
     "testing status": "verified"
   },
   {
@@ -85,8 +85,8 @@
     "category": "security",
     "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
     "dependencies": [],
-    "removal support": "not recommended",
-    "known issues": "LiteWin primary release strictly preserves Windows Defender for system protection.",
+    "removal support": "supported",
+    "known issues": "Disables Defender background scanning and real-time monitoring services to minimize memory and CPU footprint.",
     "testing status": "verified"
   },
   {

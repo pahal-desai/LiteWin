@@ -21,6 +21,7 @@ def toolversions():
 def create(data):
     # assembles complete build manifest
     stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    def_removed = any(a.get("id") == "WindowsDefender" for a in data.get("removals", []))
     manifest = {
         "litewin version": version,
         "build time": stamp,
@@ -32,7 +33,7 @@ def create(data):
         "privacy settings": data.get("privacy", []),
         "firefox integration": data.get("firefox", {"enabled": True}),
         "security status": {
-            "windows defender": "preserved",
+            "windows defender": "disabled / removed" if def_removed else "preserved",
             "windows update": "preserved",
             "windows firewall": "preserved",
             "smartscreen": "preserved",
@@ -67,11 +68,11 @@ def markdown(manifest):
         "",
         "## 2. Security & System Integrity",
         "",
-        "LiteWin strictly preserves essential Windows security protections and update capabilities:",
+        "LiteWin preserves essential system update capabilities and documents all security service changes:",
         "",
         "| Component | Status | Rationale |",
         "| :--- | :--- | :--- |",
-        "| Windows Defender | Preserved | Essential anti-malware and kernel protection |",
+        f"| Windows Defender | {sec_info.get('windows defender', 'preserved').title()} | {'Disabled to minimize background CPU/RAM footprint' if 'disabled' in sec_info.get('windows defender', '') else 'Essential anti-malware and kernel protection'} |",
         "| Windows Update | Preserved | Ongoing security updates and bug fixes |",
         "| Windows Firewall | Preserved | Inbound/outbound traffic filtering |",
         "| SmartScreen | Preserved | Malicious download protection |",

@@ -68,16 +68,51 @@ def makescript(removals):
     lines = [
         "# LiteWin Package Removal Script",
         "$ErrorActionPreference = 'SilentlyContinue'",
+        "",
     ]
     for app in removals:
         pkg_id = app["id"]
         name = app.get("name", pkg_id)
-        lines.append(f"# Remove {name}")
-        lines.append(
-            f"Get-AppxProvisionedPackage -Online | Where-Object {{ $_.DisplayName -like '*{pkg_id}*' }} | "
-            f"Remove-AppxProvisionedPackage -Online"
-        )
-        lines.append(
-            f"Get-AppxPackage -AllUsers -Name '*{pkg_id}*' | Remove-AppxPackage -AllUsers"
-        )
+
+        if pkg_id == "Microsoft-Edge":
+            lines.extend([
+                f"# Remove {name} (Strictly preserving WebView2 runtime)",
+                "$edgeSetup = Get-ChildItem -Path \"${env:ProgramFiles(x86)}\\Microsoft\\Edge\\Application\" -Filter \"setup.exe\" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1",
+                "if ($edgeSetup) {",
+                "    Start-Process -FilePath $edgeSetup.FullName -ArgumentList \"--uninstall --system-level --verbose-logging --force-uninstall\" -Wait -WindowStyle Hidden",
+                "}",
+                "Get-AppxPackage -AllUsers -Name \"*MicrosoftEdge*\" | Where-Object { $_.Name -notlike \"*WebView*\" } | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue",
+                "Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -like \"*MicrosoftEdge*\" -and $_.DisplayName -notlike \"*WebView*\" } | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue",
+                "",
+            ])
+        elif pkg_id == "WindowsDefender":
+            lines.extend([
+                f"# Disable and Remove {name}",
+                "Set-MpPreference -DisableRealtimeMonitoring $true -ErrorAction SilentlyContinue",
+                "Set-MpPreference -DisableBehaviorMonitoring $true -ErrorAction SilentlyContinue",
+                "Set-MpPreference -DisableIOAVProtection $true -ErrorAction SilentlyContinue",
+                "Set-MpPreference -DisableScriptScanning $true -ErrorAction SilentlyContinue",
+                "Set-MpPreference -SubmitSamplesConsent 2 -ErrorAction SilentlyContinue",
+                "Set-MpPreference -MAPSReporting 0 -ErrorAction SilentlyContinue",
+                "reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\" /v DisableAntiSpyware /t REG_DWORD /d 1 /f",
+                "reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\" /v DisableRealtimeMonitoring /t REG_DWORD /d 1 /f",
+                "reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection\" /v DisableBehaviorMonitoring /t REG_DWORD /d 1 /f",
+                "reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection\" /v DisableOnAccessProtection /t REG_DWORD /d 1 /f",
+                "reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection\" /v DisableScanOnRealtimeEnable /t REG_DWORD /d 1 /f",
+                "reg add \"HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\\Real-Time Protection\" /v DisableIOAVProtection /t REG_DWORD /d 1 /f",
+                "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\WinDefend\" /v Start /t REG_DWORD /d 4 /f",
+                "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\WdNisSvc\" /v Start /t REG_DWORD /d 4 /f",
+                "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\Sense\" /v Start /t REG_DWORD /d 4 /f",
+                "reg add \"HKLM\\SYSTEM\\CurrentControlSet\\Services\\SecurityHealthService\" /v Start /t REG_DWORD /d 4 /f",
+                "Get-AppxPackage -AllUsers -Name \"*SecHealthUI*\" | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue",
+                "",
+            ])
+        else:
+            lines.extend([
+                f"# Remove {name}",
+                f"Get-AppxProvisionedPackage -Online | Where-Object {{ $_.DisplayName -like '*{pkg_id}*' }} | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue",
+                f"Get-AppxPackage -AllUsers -Name '*{pkg_id}*' | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue",
+                "",
+            ])
+
     return "\n".join(lines)

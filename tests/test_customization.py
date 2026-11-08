@@ -71,3 +71,22 @@ def test_firefox_bundle():
             content = f.read()
             assert "FirefoxHTML" in content
             assert "FirefoxURL" in content
+
+
+def test_edge_and_defender_script():
+    removals = [
+        {"id": "Microsoft-Edge", "name": "Microsoft Edge"},
+        {"id": "WindowsDefender", "name": "Windows Defender"},
+    ]
+    script = packages.makescript(removals)
+
+    # Edge removal verifies setup.exe switch and preserves WebView
+    assert "setup.exe" in script
+    assert "--uninstall" in script
+    assert "WebView" in script
+
+    # Defender removal verifies service disabling and policy keys
+    assert "DisableAntiSpyware" in script
+    assert "DisableRealtimeMonitoring" in script
+    assert "WinDefend" in script
+

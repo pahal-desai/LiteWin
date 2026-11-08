@@ -88,9 +88,11 @@ def build(src_iso, out_iso=None, profile="standard", edition_idx=None, root=None
         firefox.bundle(oem_scripts)
 
         # write autounattend.xml
+        disable_def = any(a.get("id") == "WindowsDefender" for a in pkg_plan["remove"])
         unattend_content = unattend.generate(
             edition=target_ed["name"],
             lang=target_ed.get("language", "en-US"),
+            disable_defender=disable_def,
         )
         with open(os.path.join(extracted, "autounattend.xml"), "w", encoding="utf-8") as f:
             f.write(unattend_content)
