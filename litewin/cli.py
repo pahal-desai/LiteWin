@@ -4,6 +4,7 @@ import os
 import sys
 
 from litewin import iso
+from litewin import image
 from litewin import workspace
 from litewin import version
 
@@ -40,6 +41,12 @@ def run():
     insp.add_argument("--hash", action="store_true", help="calculate SHA-256 hash")
     insp.add_argument("--json", action="store_true", help="output json format")
 
+    # editions command
+    eds = subs.add_parser("editions", help="list available Windows editions in image")
+    eds.add_argument("target", help="path to ISO or WIM file")
+    eds.add_argument("--boot", action="store_true", help="list bootloader PE editions instead")
+    eds.add_argument("--json", action="store_true", help="output json format")
+
     # extract command
     ext = subs.add_parser("extract", help="safely extract ISO contents into destination")
     ext.add_argument("iso", help="path to Windows 11 ISO")
@@ -72,6 +79,16 @@ def run():
         else:
             show(res)
         sys.exit(0 if res.get("valid") else 1)
+
+    if args.cmd == "editions":
+        role = "boot" if getattr(args, "boot", False) else "install"
+        items = image.editions(args.target, role=role)
+        if getattr(args, "json", False):
+            print(json.dumps(items, indent=2))
+        else:
+            for it in items:
+                print(f"[{it['index']}] {it['name']} ({it['edition']}) - build {it['build']} [{it['architecture']}]")
+        sys.exit(0)
 
     if args.cmd == "extract":
         dest = iso.extract(args.iso, args.dest, picks=args.pick)
