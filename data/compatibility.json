@@ -1,0 +1,101 @@
+[
+  {
+    "component name": "Microsoft.WindowsStore",
+    "category": "application",
+    "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
+    "dependencies": [],
+    "removal support": "not recommended",
+    "known issues": "Removing the Microsoft Store prevents UWP updates, codec installs, and winget source sync.",
+    "testing status": "verified"
+  },
+  {
+    "component name": "Microsoft.DesktopAppInstaller",
+    "category": "application",
+    "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
+    "dependencies": [],
+    "removal support": "not recommended",
+    "known issues": "Removing DesktopAppInstaller eliminates the winget command-line package manager.",
+    "testing status": "verified"
+  },
+  {
+    "component name": "Clipchamp.Clipchamp",
+    "category": "application",
+    "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
+    "dependencies": [],
+    "removal support": "supported",
+    "known issues": "None. Standalone web-wrapper video editor.",
+    "testing status": "verified"
+  },
+  {
+    "component name": "Microsoft.BingNews",
+    "category": "promotional",
+    "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
+    "dependencies": [],
+    "removal support": "supported",
+    "known issues": "None. Standalone news app.",
+    "testing status": "verified"
+  },
+  {
+    "component name": "Microsoft.BingWeather",
+    "category": "utility",
+    "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
+    "dependencies": [],
+    "removal support": "supported",
+    "known issues": "None. Taskbar weather widget fallback to browser if removed.",
+    "testing status": "verified"
+  },
+  {
+    "component name": "Microsoft.YourPhone",
+    "category": "application",
+    "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
+    "dependencies": [],
+    "removal support": "supported",
+    "known issues": "Disables phone link and mobile device sync features.",
+    "testing status": "verified"
+  },
+  {
+    "component name": "Microsoft.549981C3F5F10",
+    "category": "utility",
+    "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
+    "dependencies": [],
+    "removal support": "supported",
+    "known issues": "None. Cortana voice assistant is deprecated by Microsoft.",
+    "testing status": "verified"
+  },
+  {
+    "component name": "Microsoft-Edge",
+    "category": "browser",
+    "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
+    "dependencies": ["Microsoft.WebView2"],
+    "removal support": "experimental",
+    "known issues": "WebView2 must NOT be removed. Removing WebView2 breaks internal application webviews.",
+    "testing status": "verified"
+  },
+  {
+    "component name": "OneDrive",
+    "category": "cloud",
+    "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
+    "dependencies": [],
+    "removal support": "supported",
+    "known issues": "Removes automatic cloud sync folder from File Explorer.",
+    "testing status": "verified"
+  },
+  {
+    "component name": "WindowsDefender",
+    "category": "security",
+    "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
+    "dependencies": [],
+    "removal support": "not recommended",
+    "known issues": "LiteWin primary release strictly preserves Windows Defender for system protection.",
+    "testing status": "verified"
+  },
+  {
+    "component name": "WindowsUpdate",
+    "category": "system service",
+    "windows build compatibility": ["22000", "22621", "22631", "26100", "26300"],
+    "dependencies": [],
+    "removal support": "unsupported",
+    "known issues": "Windows Update must never be disabled in LiteWin to maintain reliability and security.",
+    "testing status": "verified"
+  }
+]
